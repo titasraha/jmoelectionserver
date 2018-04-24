@@ -14,11 +14,11 @@ namespace JMOElectionServer
     {
         public int Booth { get; private set; }
 
+        public bool AllowVoting { get; set; }
+
         public void Start()
         {
-            this.BackColor = Color.LightGreen;
-            lblStatus.Text = "Voting in progress...";
-            cmdControl.Text = "Stop";
+            
             
         }
 
@@ -30,17 +30,38 @@ namespace JMOElectionServer
             }
         }
 
+        private void RefreshUI()
+        {
+            if (!AllowVoting)
+            {
+                this.BackColor = Color.LightGray;
+                
+                lblVoteCount.Text = "0";
+                lblStatus.Text = "Standby";
+                cmdControl.Text = "Start";
+            }
+            else
+            {
+                this.BackColor = Color.LightGreen;
+                lblStatus.Text = "Voting in progress...";
+                cmdControl.Text = "Stop";
+            }
+        }
+
         public BoothController(int BoothNumber)
         {
             Booth = BoothNumber;            
             InitializeComponent();
-            this.BackColor = Color.LightGray;
             lblBooth.Text = "Booth " + Booth.ToString();
-            lblVoteCount.Text = "0";
-            lblStatus.Text = "Standby";
-            cmdControl.Text = "Start";
+            AllowVoting = false;
+            RefreshUI();
 
+        }
 
+        private void cmdControl_Click(object sender, EventArgs e)
+        {
+            AllowVoting = !AllowVoting;
+            RefreshUI();
         }
     }
 }

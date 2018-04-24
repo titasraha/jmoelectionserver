@@ -53,6 +53,7 @@
             this.cmdControl.TabIndex = 0;
             this.cmdControl.Text = "Stop";
             this.cmdControl.UseVisualStyleBackColor = true;
+            this.cmdControl.Click += new System.EventHandler(this.cmdControl_Click);
             // 
             // lblBooth
             // 
