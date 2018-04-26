@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.Configuration;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.Net;
+using System.Net.Sockets;
 
 namespace JMOElectionServer
 {
@@ -19,15 +21,20 @@ namespace JMOElectionServer
     {
         
         private ServiceHost host;
+        private string Service_URL;
 
 
         public frmController()
         {
+            string Service_Port = ConfigurationManager.AppSettings["SERVICE_PORT"];
+
             InitializeComponent();
 
-            string uri = ConfigurationManager.AppSettings["SERVICE_URL"];
 
-            Uri baseAddress = new Uri(uri);
+            Service_URL = "http://" + GetLocalIPAddress() + ":" + Service_Port + "/votecontroller";
+            
+
+            Uri baseAddress = new Uri(Service_URL);
 
 
             host = new ServiceHost(typeof(JMOVoteService), baseAddress);
@@ -67,9 +74,22 @@ namespace JMOElectionServer
 
         }
 
+        public static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            lblInfo.Text = Service_URL;
 
         }
 
@@ -80,10 +100,5 @@ namespace JMOElectionServer
                 host.Close();
         }
 
-        private void frmController_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine(this.Width);
-            Console.WriteLine(this.Height);
-        }
     }
 }

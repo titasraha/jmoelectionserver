@@ -17,6 +17,8 @@ namespace JMOElectionServer
     {
         [OperationContract]
         bool AllowVote(int Booth);
+
+        [OperationContract]
         void VoteFeedback(int Booth, int TotalVotes, bool IsVotingOpen);
     }
 
@@ -30,7 +32,6 @@ namespace JMOElectionServer
         public void VoteFeedback(int Booth, int TotalVotes, bool IsVotingOpen)
         {
             Program.controllers[Booth].VoteCount = TotalVotes;
-            Program.controllers[Booth].AllowVoting = false;
 
         }
     }

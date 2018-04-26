@@ -26,7 +26,7 @@ namespace JMOElectionServer
         {
             set
             {
-                lblVoteCount.Text = value.ToString();
+                lblVoteCount.Text = value>0? value.ToString():"";
             }
         }
 
@@ -34,9 +34,7 @@ namespace JMOElectionServer
         {
             if (!AllowVoting)
             {
-                this.BackColor = Color.LightGray;
-                
-                lblVoteCount.Text = "0";
+                this.BackColor = Color.LightGray;               
                 lblStatus.Text = "Standby";
                 cmdControl.Text = "Start";
             }
@@ -53,6 +51,7 @@ namespace JMOElectionServer
             Booth = BoothNumber;            
             InitializeComponent();
             lblBooth.Text = "Booth " + Booth.ToString();
+            VoteCount = 0;
             AllowVoting = false;
             RefreshUI();
 
