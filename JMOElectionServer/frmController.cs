@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Configuration;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 
@@ -25,7 +25,9 @@ namespace JMOElectionServer
         {
             InitializeComponent();
 
-            Uri baseAddress = new Uri("http://localhost:8080/vote");
+            string uri = ConfigurationManager.AppSettings["SERVICE_URL"];
+
+            Uri baseAddress = new Uri(uri);
 
 
             host = new ServiceHost(typeof(JMOVoteService), baseAddress);
@@ -76,6 +78,12 @@ namespace JMOElectionServer
 
             if (host != null)
                 host.Close();
+        }
+
+        private void frmController_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(this.Width);
+            Console.WriteLine(this.Height);
         }
     }
 }
